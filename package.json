@@ -1,0 +1,35 @@
+{
+  "name": "typro-monorepo",
+  "private": true,
+  "packageManager": "pnpm@9.1.0",
+  "engines": {
+    "node": ">=20"
+  },
+  "scripts": {
+    "dev": "concurrently \"pnpm --filter @typro/api dev\" \"pnpm --filter @typro/web dev\"",
+    "build": "pnpm -r build",
+    "start": "pnpm --filter @typro/api start",
+    "test": "pnpm -r run test",
+    "test:e2e": "playwright test",
+    "typecheck": "pnpm -r exec tsc --noEmit",
+    "lint": "eslint .",
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
+    "clean": "find . -name 'dist' -type d -prune -exec rm -rf '{}' + && find . -name 'node_modules' -type d -prune -exec rm -rf '{}' +",
+    "db:migrate": "pnpm --filter @typro/api prisma migrate dev",
+    "db:seed": "pnpm --filter @typro/api prisma db seed",
+    "docker:up": "docker-compose up --build -d",
+    "docker:down": "docker-compose down"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.44.0",
+    "@typescript-eslint/eslint-plugin": "^7.10.0",
+    "@typescript-eslint/parser": "^7.10.0",
+    "concurrently": "^8.2.2",
+    "eslint": "^8.57.0",
+    "eslint-plugin-react": "^7.34.1",
+    "eslint-plugin-react-hooks": "^4.6.2",
+    "prettier": "^3.2.5",
+    "typescript": "^5.4.5"
+  }
+}

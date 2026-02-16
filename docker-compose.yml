@@ -1,0 +1,40 @@
+version: '3.8'
+
+services:
+  api:
+    build:
+      context: .
+      dockerfile: apps/api/Dockerfile
+    ports:
+      - "4000:4000"
+    environment:
+      - DATABASE_URL=file:/data/typro.db
+      - PORT=4000
+      - CORS_ORIGIN=http://localhost:3000
+      - API_KEY=${API_KEY}
+    volumes:
+      - typro_data:/data
+    networks:
+      - typro-network
+    restart: always
+
+  web:
+    build:
+      context: .
+      dockerfile: apps/web/Dockerfile
+      args:
+        - VITE_API_BASE_URL=http://localhost:4000/api
+    ports:
+      - "3000:80"
+    depends_on:
+      - api
+    networks:
+      - typro-network
+    restart: always
+
+networks:
+  typro-network:
+    driver: bridge
+
+volumes:
+  typro_data:
